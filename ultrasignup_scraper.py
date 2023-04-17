@@ -161,7 +161,7 @@ for i in range(len(fnames)):
     for athlete in athletes:
         
         idx = str(athlete).find('Gender + Age :')
-        check_age = str(athlete)[idx+20:idx+22]
+        check_age = str(athlete)[idx+20:idx+22].replace('<', '')
         
         if check_age == '/s':
             
