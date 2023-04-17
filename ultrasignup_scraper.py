@@ -161,16 +161,20 @@ for i in range(len(fnames)):
     for athlete in athletes:
         
         idx = str(athlete).find('Gender + Age :')
-        check_age = str(athlete)[idx+20:idx+22].replace('<', '')
+        check_age = str(athlete)[idx+20:idx+22]
         
-        if check_age == '/s':
+        try:
+            
+            check_age = int(check_age)
+            
+            if abs(ages[i] - int(check_age)) <= 1:
+                
+                event_idx = athletes.index(athlete)
+                
+        except:
             
             pass
-        
-        elif abs(ages[i] - int(check_age)) <= 1:
             
-            event_idx = athletes.index(athlete)
-    
     # Extract and store relevant data
     
     if event_idx != None:
