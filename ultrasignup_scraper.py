@@ -145,9 +145,11 @@ upcoming = []
 competed = []
 dnf = []
 dns = []
+check_rage = []
 
 for i in range(len(fnames)):
     
+    print(i)
     url = 'https://ultrasignup.com/results_participant.aspx?fname=' + fnames[i] + '&lname=' + lnames[i]
     page = Page(url)
     soup = bs(page.html, 'html.parser')
@@ -195,11 +197,12 @@ for i in range(len(fnames)):
                 
                 ref_list.append(0)
         
-        ref_list = ref_list + [0]
+        ref_list = ref_list + [1] # signifies end of list
         
         for row in rows:
             
             rr = row.findAll('div')
+            weird = -1
             
             try:
                 
@@ -215,7 +218,19 @@ for i in range(len(fnames)):
                 
             except:
                 
-                idx2 = -1
+                if len(rr) == 1:
+                    
+                    try:
+                        
+                        idx2 = str(rr[0]).find('text: time')
+                        weird = 42069
+                        
+                    except:
+                        
+                        idx2 = -1
+                else:
+                    
+                    idx2 = -1
             
             if idx1 > 0:
                 
@@ -234,13 +249,27 @@ for i in range(len(fnames)):
                     
                     overall.append(None)
                     gp.append(None)
-                    results.append(None)                    
+                    results.append(None)
                     tmpdat = raw_data[raw_data.Runner_ID == rid].reset_index(drop = True)
-                    rag = tmpdat.Age[0] + y - tmpdat.RACE_Year[0]
-                    rage.append(rag)
                     competed.append(0)
                     
-                    if y == 2023:
+                    try:
+                        
+                        if rcities[-2] == rcities[-1]:
+                            
+                            rage.append(rage[-1] + y - years[-2])
+                            
+                        else:
+                            
+                            check_rage.append(len(rage))
+                            rage.append(None)
+                            
+                    except:
+                        
+                        check_rage.append(len(rage))
+                        rage.append(None)
+                        
+                    if y >= 2023:
                         
                         upcoming.append(1)
                         dnf.append(0)
@@ -261,27 +290,92 @@ for i in range(len(fnames)):
                     
             elif idx2 > 0:
                 
-                flag = 0
-                res = str(rr[1])[idx2+12:str(rr[1]).find('</strong>')]
-                results.append(res)
-                oidx = str(rr[0]).find('gender_place ">')
-                otext = str(rr[0])[oidx+15:-6].split(' ')
-                overall.append(int(otext[0][8:]))
-                gp.append(int(otext[1][3:]))
-                
+                if weird > 0:
+                    
+                    overall.append(None)
+                    gp.append(None)
+                    res = str(rr[0])[idx2+12:str(rr[0]).find('</strong>')]
+                    results.append(res)
+                    
+                else:
+                    
+                    try:
+                        
+                        res = str(rr[1])[idx2+12:str(rr[1]).find('</strong>')]
+                        results.append(res)
+                        oidx = str(rr[0]).find('gender_place ">')
+                        otext = str(rr[0])[oidx+15:-6].split(' ')
+                        overall.append(int(otext[0][8:]))
+                        gp.append(int(otext[1][3:]))
+                        
+                    except:
+                        
+                        results.append(None)
+                        overall.append(None)
+                        gp.append(None)
+                    
             else:
+                
+                rx = str(rr[0])[str(rr[0]).find('>Age: ')+6:-6]
                 
                 try:
                     
-                    rx = str(rr[0])[str(rr[0]).find('>Age: ')+6:-6]
-                    rage.append(int(rx))
-                    
+                    if int(rx) > 0:
+                        
+                        rage.append(int(rx))
+                        
+                    elif runners[-2] == runners[-1]:
+                        
+                        try:
+                            
+                            rage.append(rage[-1] + y - years[-1])
+                            
+                        except:
+                            
+                            check_rage.append(len(rage))
+                            rage.append(None)
+                            
+                    else:
+                        
+                        check_rage.append(len(rage))
+                        rage.append(None)
+                        
                 except:
                     
-                    tmpdat = raw_data[raw_data.Runner_ID == rid].reset_index(drop = True)
-                    rag = tmpdat.Age[0] + y - tmpdat.RACE_Year[0]
-                    rage.append(rag)
-                    
+                    if runners[-2] == runners[-1]:
+                        
+                        try:
+                            
+                            rage.append(rage[-1] + y - years[-2])
+                            
+                        except:
+                            
+                            check_rage.append(len(rage))
+                            rage.append(None)
+                            
+                    else:
+                        
+                        check_rage.append(len(rage))
+                        rage.append(None)
+                        
+# Updating ages via check_rage
+
+for number_increasing in range(10): # sometimes there are consecutive missing ages
+    
+    for c in check_rage:
+        
+        try:
+            
+            if rcities[c] == rcities[c+1]:
+                
+                new_rage = rage[c+1] + years[c] - years[c+1]
+                rage[c] = new_rage
+                check_rage.remove(c)
+                
+        except:
+            
+            continue
+
 # Clean up events with event - distance - location
 
 def event_cleaner(xxx):
@@ -320,6 +414,22 @@ dnf = pd.Series(dnf, name = 'DNF')
 dns = pd.Series(dns, name = 'DNS')
 
 out = pd.concat([runners, rlocs, dates, years, overall, gp, results, rage, event_names, event_types, event_locs, upcoming, competed, dnf, dns], axis = 1)
+
+# Add runner gender to out
+
+def get_gender(i):
+    
+    tmp = raw_data[raw_data.Runner_ID == i].reset_index(drop = True)
+    g = tmp.Gender[0]
+    
+    return g
+
+out_ids = list(out.Runner_ID.unique())
+
+genders = [get_gender(out_id) for out_id in out_ids]
+gender_list = [genders[out_ids.index(r)] for r in out.Runner_ID]
+
+out = pd.concat([out, pd.Series(gender_list, name = 'Gender')], axis = 1)
 
 # Save it
 
