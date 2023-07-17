@@ -11,7 +11,7 @@ from PyQt5.QtCore import QUrl
 
 # Project directory info
 
-direc = 'F:/DNF/'
+direc = 'D:/DNF/'
 
 # Where the original ultradata was stored (too big to have multiple copies lying around....like i don't already...)
 
