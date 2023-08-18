@@ -115,25 +115,25 @@ stargazer(gxmod.nopm, gxmod.nopm10, gxmod.nopb, gxmod.all, type = 'text', omit =
 # Repeat for only those who have DNF'd at some point
 
 qmod.pm <- lm(DNF ~ log(PM+.001) + factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint + Travel_Distance
-              + Ability + Time_Since + I(Time_Since^2) + Previous_Races + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+              + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qmod.pm10 <- lm(DNF ~ log(PM10+.001) + factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint + Travel_Distance
-                + Ability + Time_Since + I(Time_Since^2) + Previous_Races + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+                + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qmod.o3 <- lm(DNF ~ log(O3+.001) + factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint + Travel_Distance
-              + Ability + Time_Since + I(Time_Since^2) + Previous_Races + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+              + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qmod.no2 <- lm(DNF ~ log(NO2+.001) + factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint + Travel_Distance
-               + Ability + Time_Since + I(Time_Since^2) + Previous_Races + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+               + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qmod.co <- lm(DNF ~ log(CO+.001) + factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint + Travel_Distance
-              + Ability + Time_Since + I(Time_Since^2) + Previous_Races + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+              + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qmod.pb <- lm(DNF ~ log(Pb+.001) + factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint + Travel_Distance
-              + Ability + Time_Since + I(Time_Since^2) + Previous_Races + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+              + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qmod.nopm <- lm(DNF ~ log(PM10+.001) + log(O3+.001) + log(NO2+.001) + log(CO+.001) + factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint
-                + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Travel_Distance + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+                + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + Travel_Distance + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qmod.nopm10 <- lm(DNF ~ log(PM+.001) + log(O3+.001) + log(NO2+.001) + log(CO+.001) + factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint
-                  + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Travel_Distance + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+                  + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + Travel_Distance + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qmod.nopb <- lm(DNF ~ log(PM+.001) + log(PM10+.001) + log(O3+.001) + log(NO2+.001) + log(CO+.001) + factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint
-                + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Travel_Distance  + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+                + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + Travel_Distance  + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qmod.all <- lm(DNF ~ log(PM+.001) + log(PM10+.001) + log(O3+.001) + log(NO2+.001) + log(CO+.001) + log(Pb+.001) + factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint
-               + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Travel_Distance  + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+               + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + Travel_Distance  + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 
 qxmod.pm <- coeftest(qmod.pm, vcov = vcovCL, cluster = ~Runner_ID)
 qxmod.pm10 <- coeftest(qmod.pm10, vcov = vcovCL, cluster = ~Runner_ID)
@@ -152,25 +152,25 @@ stargazer(qxmod.nopm, qxmod.nopm10, qxmod.nopb, qxmod.all, type = 'text', omit =
 # Repeating with gender - pollution interactions
 
 qgmod.pm <- lm(DNF ~ log(PM+.001)*factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint + Travel_Distance
-               + Ability + Time_Since + I(Time_Since^2) + Previous_Races + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+               + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qgmod.pm10 <- lm(DNF ~ log(PM10+.001)*factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint + Travel_Distance
-                 + Ability + Time_Since + I(Time_Since^2) + Previous_Races + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+                 + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qgmod.o3 <- lm(DNF ~ log(O3+.001)*factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint + Travel_Distance
-               + Ability + Time_Since + I(Time_Since^2) + Previous_Races + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+               + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qgmod.no2 <- lm(DNF ~ log(NO2+.001)*factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint + Travel_Distance
-                + Ability + Time_Since + I(Time_Since^2) + Previous_Races + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+                + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qgmod.co <- lm(DNF ~ log(CO+.001)*factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint + Travel_Distance
-               + Ability + Time_Since + I(Time_Since^2) + Previous_Races + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+               + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qgmod.pb <- lm(DNF ~ log(Pb+.001)*factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint + Travel_Distance
-               + Ability + Time_Since + I(Time_Since^2) + Previous_Races + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+               + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qgmod.nopm <- lm(DNF ~ log(PM10+.001)*factor(Gender) + log(O3+.001)*factor(Gender) + log(NO2+.001)*factor(Gender) + log(CO+.001)*factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint
-                 + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Travel_Distance + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+                 + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + Travel_Distance + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qgmod.nopm10 <- lm(DNF ~ log(PM+.001)*factor(Gender) + log(O3+.001)*factor(Gender) + log(NO2+.001)*factor(Gender) + log(CO+.001)*factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint
-                   + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Travel_Distance + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+                   + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + Travel_Distance + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qgmod.nopb <- lm(DNF ~ log(PM+.001)*factor(Gender) + log(PM10+.001)*factor(Gender) + log(O3+.001)*factor(Gender) + log(NO2+.001)*factor(Gender) + log(CO+.001)*factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint
-                 + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Travel_Distance  + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+                 + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + Travel_Distance  + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 qgmod.all <- lm(DNF ~ log(PM+.001)*factor(Gender) + log(PM10+.001)*factor(Gender) + log(O3+.001)*factor(Gender) + log(NO2+.001)*factor(Gender) + log(CO+.001)*factor(Gender) + log(Pb+.001)*factor(Gender) + Age + Event_Temperature + Event_Precipitation + Event_Windspeed + Event_Dewpoint
-                + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Travel_Distance  + factor(Year) + factor(Event) + factor(Type), data = dnfx)
+                + Ability + Time_Since + I(Time_Since^2) + Previous_Races + Prior_DNF + Travel_Distance  + factor(Year) + factor(Event) + factor(Type), data = dnfx)
 
 qgxmod.pm <- coeftest(qgmod.pm, vcov = vcovCL, cluster = ~Runner_ID)
 qgxmod.pm10 <- coeftest(qgmod.pm10, vcov = vcovCL, cluster = ~Runner_ID)
