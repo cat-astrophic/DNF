@@ -15,7 +15,7 @@ direc = 'D:/DNF/'
 
 # Where the original ultradata was stored (too big to have multiple copies lying around....like i don't already...)
 
-data_path = 'F:/ultradata/raw_results_data.csv'
+data_path = 'D:/ultradata/raw_results_data.csv'
 
 # Reading in the raw ultramarathon data
 
