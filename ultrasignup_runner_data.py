@@ -189,6 +189,21 @@ for i in range(len(data)):
 
 data = pd.concat([data, pd.Series(past, name = 'Previous_Races')], axis = 1)
 
+# Adding previous DNF and DNS variables
+
+prev_dnf = []
+prev_dns = []
+
+for i in range(len(data)):
+    
+    tmp = data[data.Runner_ID == data.Runner_ID[i]]
+    tmp = tmp[tmp.D < data.D[i]]
+    
+    prev_dnf.append(int(sum(tmp.DNF) > 0))
+    prev_dns.append(int(sum(tmp.DNS) > 0))
+
+data = pd.concat([data, pd.Series(prev_dnf, name = 'Prior_DNF'), pd.Series(prev_dns, name = 'Prior_DNS')], axis = 1)
+
 # Save the data
 
 data.to_csv(direc + 'data/data.csv')
