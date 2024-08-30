@@ -12,7 +12,7 @@ direc = 'D:/DNF/'
 # Reading in the data
 
 data = pd.read_csv(direc + 'data/data.csv')
-raw = pd.read_csv('D:/ultradata/raw_results_data.csv') # in a different directory bc its a chonky boy
+raw = pd.read_csv(direc + 'data/raw_results_data.csv')
 
 # Creating gender counts for each race in raw
 
@@ -179,7 +179,6 @@ data = pd.concat([data, pd.Series(time_since, name = 'Time_Since')], axis = 1)
 past = []
 
 for i in range(len(data)):
-    
     
     print(i)
     
